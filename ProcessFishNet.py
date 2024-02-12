@@ -1,12 +1,12 @@
 ###############################################################################
 # Create Fishnet for GSFLOW GRID
-# Cap Wallace Modeling project
+# Rattlesnake Modeling project
 # W. Payton Gardner
 # University of Montana
-# School of Forestry and Conservation
+# Dept. of Geosciences
 ###############################################################################
 
-# In this sript, we create a fishnet with the extents of a dem
+# In this script, we create a fishnet with the extents of a dem
 # and lay it over the dem to visualize the spacing.
 # We then save the fishnet as a grid for later use, and finally resample the dem
 # to the grid.
@@ -21,6 +21,7 @@ import numpy as np
 import flopy
 from gsflow.builder import GenerateFishnet
 import pdb
+
 try:
     from numba import jit
     multithread = False
@@ -28,20 +29,18 @@ except ImportError:
     multithread = True
     print('No Numba')
 
-
-
 ##################################################
 # Input path management
 ##################################################
 
 # raster file - is a clipped section ned tile which contains the drainage - projected to utm zone 12N from QGIS
-raster = os.path.join('data', 'gis', 'clipped_dem_ElkCreek.tif')
+raster = os.path.join('data', 'gis', 'RattlesnakeDEM_UTM12N.tif')
 # set our cell size in meters.  #I'll start out with 100m for now, but will likely refine
 cellsize=100
 method = "nearest"
 
 #model name
-model_name = "Elkcreek_%3im"%cellsize+method
+model_name = "RattlesnakeCreek_%3im"%cellsize+method
 
 #toplevel ouput path
 model_path = os.path.join("models",model_name)
@@ -52,7 +51,8 @@ gis_derived_path = os.path.join(model_path,"gis_deriv")
 #grid file
 fname="grid.bin"
 grid_file = os.path.join(model_path, fname)
-modelgrid = GenerateFishnet(raster, xcellsize=cellsize, ycellsize=cellsize)
+modelgrid = GenerateFishnet(raster, xcellsize=cellsize,\
+                             ycellsize=cellsize)
 
 # let's load the raster for plotting
 robj = flopy.utils.Raster.load(raster)
@@ -118,4 +118,5 @@ raster_file = os.path.join(gis_derived_path,dfrname)
 np.savetxt(dem_file, dem_data, delimiter="  ")
 
 #output a tif file for post processing with SAGA.  
-flopy.export.utils.export_array(modelgrid,raster_file,dem_data,fieldname='Elevation')
+flopy.export.utils.export_array(modelgrid,raster_file,\
+                                dem_data,fieldname='Elevation')
