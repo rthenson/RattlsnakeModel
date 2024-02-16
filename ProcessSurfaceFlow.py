@@ -40,7 +40,7 @@ gis_derived_path = os.path.join(model_path,"gis_deriv")
 mg_file = os.path.join(model_path, "grid.bin")
 
 # Reprocessed, resampled DEM with SAGA needs to be used for flow accumulation
-dem_data = os.path.join(gis_derived_path, "DEMResampledSAGA.tif")
+dem_data = os.path.join(gis_derived_path, "YourResampledFilledBurnedDEMName.tif")
 
 #######################################################
 #PROCESS FLOW ACCUMULATION
@@ -93,7 +93,7 @@ pmv.plot_array(
 )
 pc = pmv.plot_array(flow_accumulation,alpha=0.4)
 
-plt.title("Rattlesnake Creek 100m flow accumulation array")
+plt.title("Rattlesnake Creek %3i flow accumulation array"%cellsize)
 plt.colorbar(pc, shrink=0.7)
 plt.show()
 
